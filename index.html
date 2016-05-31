@@ -1,15 +1,175 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="https://cdn.mxpnl.com/libs/mixpanel-platform/css/reset.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.css">
-    <script src="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.js"></script>
-  </head>
-  <body class="mixpanel-platform-body">
-    <h1>Hello, World!</h1>
-    <script>
-      // Run queries and display results here
-    </script>
-  </body>
-</html>
+
+<html lang="en">
+<!-- Basic Needs -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+  
+  <title>AK's Executive Dashboard</title>
+  <meta name="description" content="">
+  <meta name="author" content="AK">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="./favicon.ico">
+
+ <!-- CSS -->
+  <link rel="stylesheet" href="./css/font.css" type="text/css">
+  <link rel="stylesheet" href="./css/normalize.css" type="text/css">
+  <link rel="stylesheet" href="./css/skeleton.css" type="text/css">
+<style type="text/css">
+ .dataTarget
+ {
+  height: 600px;
+ } 
+
+.dataBars
+{
+  /*margin: 0 auto 0 auto;*/
+  position: relative;
+}
+
+.container
+{
+  text-align: center;
+}
+
+.filledBar
+{
+  width: 100%;
+  height: 100px;
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  display: inline;
+  padding-top: 10px;
+  z-index: -1; 
+}
+
+button
+{
+  z-index: 10;
+  width: 240px;
+  padding-left: 0px;
+  padding-right: 0px;
+  position: relative;
+}
+
+/* change padding-top to move bars */
+
+#barOne
+{
+
+  background-color: #8484fc;
+  transition: height 1.5s;
+
+}
+
+#barTwo
+{
+ background-color: #f95858; 
+ margin-left: 0px;
+ transition: height 2s;
+
+}
+
+#barThree
+{
+  background-color: #5dae5d;
+ /* margin-left: 106px;
+  width: 64%;*/
+  transition: height 2.5s;
+
+}
+
+</style>
+<!-- JS -->
+<script src="./js/jquery.min.js"></script>
+<style type="text/css"></style>
+ 
+</head>
+
+<!-- Content -->
+
+<body>
+  
+    <div class="container u-full-width">
+      <div class="row">
+        <div class="twelve columns">
+          <h4 class="hero-heading">Mixpanel Executive Dashboard</h4>
+          </div>
+        </div>
+
+        <div class="row">
+        <div class="four columns dataBars">
+        <button class="button-secondary dataTarget" id="DAU"><h2>XX</h2><br/>Daily Active Users
+        <div id="barOne" class="filledBar"></div>
+        </button>
+         
+
+
+        </div>
+
+        <div class="four columns dataBars">
+        <button class="button-secondary dataTarget" id="DCR"><h2>XX</h2><br/>Daily Conversion Rate
+        <div id="barTwo" class="filledBar"></div>
+        </button>
+        
+        </div>
+
+        <div class="four columns dataBars">
+        <button class="button-secondary dataTarget" id="SIGN"><h2>XX</h2><br/>Signups This Week
+        <div id="barThree" class="filledBar"></div>
+        </button>
+        </div>
+
+        </div>
+
+        <div class="row" id="emptySpace" style="height:100px;">
+        </div>
+  
+          <a id="dataRefresh" class="button button-primary">Press me!</a>
+          
+      
+    </div>
+
+<!-- make the query -->
+
+        
+<!-- update the bar chart -->
+<script>
+
+$(document).on("ready", function(){
+  console.log("doc loaded");
+
+// set padding to update stuff
+// $('#barOne').css("padding-top", "200px");
+
+
+
+var dau = 10;
+var conv = 20;
+var signup = 60;
+
+$('#dataRefresh').on('click', function() { updateData(10, 20, 60)
+});
+
+
+});
+
+function updateData(dau, conv, signup)
+{
+  // query runs here
+
+
+
+  // chart updated here
+  console.log('trying to update data');
+  $('#barOne').css("height", dau+"%");
+  $('#barTwo').css("height", conv+"%");
+  $('#barThree').css("height", signup+"%");
+}
+
+</script>      
+
+</body></html>
