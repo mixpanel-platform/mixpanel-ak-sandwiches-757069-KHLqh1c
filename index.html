@@ -111,14 +111,14 @@ button
         </div>
 
         <div class="four columns dataBars">
-        <button class="button-secondary dataTarget" id="DCR"><h2>XX</h2><br/>Daily Conversion Rate
+        <button class="button-secondary dataTarget" id="CONV"><h2>XX</h2><br/>Daily Conversion Rate
         <div id="barTwo" class="filledBar"></div>
         </button>
         
         </div>
 
         <div class="four columns dataBars">
-        <button class="button-secondary dataTarget" id="SIGN"><h2>XX</h2><br/>Signups This Week
+        <button class="button-secondary dataTarget" id="SIGNUPS"><h2>XX</h2><br/>Signups This Week
         <div id="barThree" class="filledBar"></div>
         </button>
         </div>
@@ -166,8 +166,11 @@ function updateData(dau, conv, signup)
   // chart updated here
   console.log('trying to update data');
   $('#barOne').css("height", dau+"%");
+  $('#DAU h2').text(dau*100)
   $('#barTwo').css("height", conv+"%");
+  $('#CONV h2').text(conv*100 +"%")
   $('#barThree').css("height", signup+"%");
+  $('#SIGNUPS h2').text(signup*100)
 }
 
 </script>      
