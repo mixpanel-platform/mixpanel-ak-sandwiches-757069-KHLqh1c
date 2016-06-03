@@ -169,29 +169,25 @@ function query1() {
             // summerize event names
             //.groupBy(['name'], mixpanel.reducer.count())
     }).done(function(results) {
-        console.log(results)
+       return results;
     });
 }
 </script>
         
 <!-- update the bar chart -->
 <script>
-
 $(document).on("ready", function(){
   console.log("doc loaded");
 
-// set padding to update stuff
-// $('#barOne').css("padding-top", "200px");
 
 
-
-var dau = 10;
 var conv = 20;
 var signup = 60;
 
 $('#dataRefresh').on('click', function() { 
-  updateData(10, 20, 60);
-  query1();
+// query runs here
+  var DAU = query1();
+  updateData(DAU, 20, 60);
 });
 
 
@@ -199,14 +195,11 @@ $('#dataRefresh').on('click', function() {
 
 function updateData(dau, conv, signup)
 {
-  // query runs here
-
-
 
   // chart updated here
   console.log('trying to update data');
-  $('#barOne').css("height", dau+"%");
-  $('#DAU h2').text(dau*100)
+  $('#barOne').css("height", (dau/10000)*100+"%");
+  $('#DAU h2').text(dau)
   $('#barTwo').css("height", conv+"%");
   $('#CONV h2').text(conv +"%")
   $('#barThree').css("height", signup+"%");
