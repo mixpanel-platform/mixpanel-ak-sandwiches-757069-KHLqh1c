@@ -169,6 +169,7 @@ function query1() {
             // summerize event names
             //.groupBy(['name'], mixpanel.reducer.count())
     }).done(function(results) {
+       console.log('DAU query: '+results);
        return results;
     });
 }
@@ -186,8 +187,7 @@ var signup = 60;
 
 $('#dataRefresh').on('click', function() { 
 // query runs here
-  var DAU = query1();
-  updateData(DAU, 20, 60);
+  updateData(query1(), 20, 60);
 });
 
 
