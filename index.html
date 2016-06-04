@@ -7,7 +7,7 @@
 
 
   
-  <title>AK's Executive Dashboard</title>
+  <title>AK's Dashboard</title>
   <meta name="description" content="">
   <meta name="author" content="AK">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -104,7 +104,7 @@ button
     <div class="container u-full-width">
       <div class="row">
         <div class="twelve columns">
-          <h4 class="hero-heading">Mixpanel Executive Dashboard</h4>
+          <h4 class="hero-heading">A Mixpanel Dashboard Example</h4>
           </div>
         </div>
 
@@ -141,7 +141,7 @@ button
       
     </div>
 
-<!-- make the query -->
+<!-- make the queries -->
 <script language="javascript">
 function query1() {
     MP.api.jql(function main() {
@@ -170,9 +170,109 @@ function query1() {
             //.groupBy(['name'], mixpanel.reducer.count())
     }).done(function(results) {
        console.log('DAU query: '+results);
-       return results;
+
+       //update our view with results
+       var dau = results.toString()
+       $('#barOne').css("height", (dau/10000)*100+"%");
+        $('#DAU h2').text(dau)
+  
+       //return results;
     });
 }
+
+function query2() {
+
+
+MP.api.jql(function main() {
+  var funnel = params.funnel || ["Purchase Sandwich", "Recommend a Sandwich"];
+  return Events({
+    from_date: "2016-06-01",
+    to_date: "2016-06-03"
+  })
+  // get the number of steps completed by each user
+  .groupByUser(function(steps_completed, events) {
+    if (steps_completed === undefined) { steps_completed = 0; }
+    _.each(events, function(e) {
+      if (e.name === funnel[steps_completed]) {
+        steps_completed++;
+      }
+    });
+    return steps_completed;
+  })
+  // filter out users who did not enter the funnel
+  .filter(function(item) { return item.value > -1 })
+  
+  // Add counts for step N to counts for previous steps.
+  // This converts us from "users who ended at each step"
+  // into "users who were ever present at each step".
+  .reduce(function(accumulators, users_with_final_steps) {
+    var funnel_steps = Array(funnel.length);
+    for (var i = 0; i < funnel_steps.length; i++) {
+      funnel_steps[i] = 0;
+    }
+    _.each(users_with_final_steps, function(user) {
+      // for each user, count them once per step
+      // until the step they ended on
+      for (var i = 0; i < user.value; i++) {
+        funnel_steps[i]++;
+      }
+    });
+    // handle previous funnel step counts, if
+    // there have been multiple invocations of this function
+    _.each(accumulators, function(accumulator) {
+      _.each(accumulator, function(step_count, i) {
+        funnel_steps[i] += step_count;
+      });
+    });
+
+    return funnel_steps;
+  });
+}).done(function(results){
+    console.log("funnel query: " + results)
+    
+    //update the view
+    var reformat = results[0]
+    var conv = Math.floor(reformat[1]/reformat[0]*100)
+    $('#barTwo').css("height", conv+"%");
+    $('#CONV h2').text(conv +"%")
+  
+
+  });
+}
+
+
+function query3() {
+
+MP.api.jql(function main() {
+  return Events({
+    from_date: "2016-06-01",
+    to_date: "2016-06-04"
+  })
+  //get just Sign Up events
+  .filter(function(event){
+    return event.name === "Sign Up"
+  })
+  
+  //get the number of signups per user
+  .groupByUser(function(count, events) {
+                count = count || 0;
+                return count + events.length;
+            })
+  
+  //count unique sign ups
+  .reduce(mixpanel.reducer.count())
+}).done(function(results){
+  console.log("sign up query: " + results)
+
+  //update the view
+  var signup = results;
+  $('#barThree').css("height", signup/6000*100+"%");
+  $('#SIGNUPS h2').text(signup)
+
+});
+
+}
+
 </script>
         
 <!-- update the bar chart -->
@@ -182,29 +282,21 @@ $(document).on("ready", function(){
 
 
 
-var conv = 20;
-var signup = 60;
+
 
 $('#dataRefresh').on('click', function() { 
-// query runs here
-  updateData(query1(), 20, 60);
+// run querys here:
+  query1();
+  query2();
+  query3();
+
+  console.log('data updated!')
+  
 });
 
 
 });
 
-function updateData(dau, conv, signup)
-{
-
-  // chart updated here
-  console.log('trying to update data');
-  $('#barOne').css("height", (dau/10000)*100+"%");
-  $('#DAU h2').text(dau)
-  $('#barTwo').css("height", conv+"%");
-  $('#CONV h2').text(conv +"%")
-  $('#barThree').css("height", signup+"%");
-  $('#SIGNUPS h2').text(signup*100)
-}
 
 </script>      
 
